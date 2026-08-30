@@ -1,0 +1,9 @@
+{
+  "name": "Personality Quizzes",
+  "short_name": "Personality Quizzes",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "orientation": "any"
+}
