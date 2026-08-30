@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Shell from "./components/Shell";
 
@@ -369,9 +368,9 @@ const QUIZZES: Quiz[] = [
       },
     ],
     results: [
-      "You're secretly **Hermione Granger** — not because you're a nerd (okay, partly), but because you care so deeply about doing things right that you sometimes forget to just *be*. You've prepared for every outcome except the one where you let yourself rest.",
-      "You're secretly **Flynn Rider / Rapunzel's chaotic energy** — charming, adaptable, a little unserious on the outside, deeply feeling on the inside. You use humor as armor and most people never see past it.",
-      "You're secretly **Ted Lasso** — relentlessly kind in a world that doesn't always deserve it. You lead with empathy and it confuses people. Your optimism isn't naïve — it's a choice you make every day.",
+      "You're secretly **Hermione Granger** — not because you're a nerd (okay, partly), but because you care so deeply about doing things right that you sometimes forget to just be. You've prepared for every outcome except the one where you let yourself rest.",
+      "You're secretly **Flynn Rider** — charming, adaptable, a little unserious on the outside, deeply feeling on the inside. You use humor as armor and most people never see past it.",
+      "You're secretly **Ted Lasso** — relentlessly kind in a world that doesn't always deserve it. You lead with empathy and it confuses people. Your optimism isn't naive — it's a choice you make every day.",
       "You're secretly **Leslie Knope** — you care about things with an intensity that baffles people. You will make this work. You will make all of it work. Nobody asked you to carry this much, but here you are.",
     ],
   },
@@ -474,7 +473,7 @@ const QUIZZES: Quiz[] = [
       "You'd be the **Royal Advisor** — the real power behind the throne. You'd never want the crown (too visible, too risky), but you'd make every decision that mattered. The ruler would think it was their idea. It wasn't.",
       "You'd be the **Court Diplomat** — charming, strategic, always in the right room at the right time. You'd broker peace deals, arrange marriages, and navigate politics like a chess grandmaster. Everyone would underestimate you. Once.",
       "You'd be the **Master Craftsperson** — the one who built things that lasted centuries. Respected by everyone, loyal to your guild, above the petty politics. You'd have a good life and the quiet satisfaction of making things that mattered.",
-      "You'd be the **Traveling Merchant or Spy** — impossible to pin down, always with information, always with options. You'd work for whoever paid best and somehow outlive every regime. Survival is its own kind of power.",
+      "You'd be the **Traveling Merchant** — impossible to pin down, always with information, always with options. You'd work for whoever paid best and somehow outlive every regime. Survival is its own kind of power.",
     ],
   },
   {
@@ -522,10 +521,10 @@ const QUIZZES: Quiz[] = [
       },
     ],
     results: [
-      "**Low flag count — 1/5 🚩**. You're actually pretty self-aware and emotionally regulated. You're not perfect, but you try, you reflect, and you grow. You're the kind of person people feel safe with. This is rare.",
-      "**Moderate flags — 2.5/5 🚩**. You have patterns. You know what they are. You're working on them — sometimes. You're lovable and frustrating in equal measure, and the right person finds both things endearing.",
-      "**Elevated flags — 3.5/5 🚩**. You're a project. A worthwhile one! But a project. You have charm and depth, but also some habits that make people work harder than they should. The good news: awareness is step one.",
-      "**High flag count — 4.5/5 🚩**. You are a lot. Gloriously, chaotically a lot. The people who stay love you fiercely. The people who leave have a very interesting story to tell. You are unforgettable in every direction.",
+      "**Low flag count — 1/5 flags**. You're actually pretty self-aware and emotionally regulated. You're not perfect, but you try, you reflect, and you grow. You're the kind of person people feel safe with. This is rare.",
+      "**Moderate flags — 2.5/5 flags**. You have patterns. You know what they are. You're working on them — sometimes. You're lovable and frustrating in equal measure, and the right person finds both things endearing.",
+      "**Elevated flags — 3.5/5 flags**. You're a project. A worthwhile one! But a project. You have charm and depth, but also some habits that make people work harder than they should. The good news: awareness is step one.",
+      "**High flag count — 4.5/5 flags**. You are a lot. Gloriously, chaotically a lot. The people who stay love you fiercely. The people who leave have a very interesting story to tell. You are unforgettable in every direction.",
     ],
   },
   {
@@ -533,7 +532,7 @@ const QUIZZES: Quiz[] = [
     emoji: "🕵️",
     title: "Could you survive a murder mystery?",
     subtitle: "Victim, suspect, or detective? Let's find out.",
-    color: "#1e1b4b",
+    color: "#4338ca",
     questions: [
       {
         text: "At the dinner party, you:",
@@ -558,7 +557,7 @@ const QUIZZES: Quiz[] = [
         options: [
           "Immediately present your alibi with evidence",
           "Get flustered and accidentally seem guiltier",
-          "Lawyer up. Say nothing.",
+          "Say nothing. Lawyer up.",
           "Turn it around and accuse someone else",
         ],
       },
@@ -634,6 +633,13 @@ const QUIZZES: Quiz[] = [
 
 type Screen = "home" | "quiz" | "result";
 
+function renderBoldText(text: string) {
+  const parts = text.split(/\*\*(.*?)\*\*/g);
+  return parts.map((part, i) =>
+    i % 2 === 1 ? <strong key={i}>{part}</strong> : part
+  );
+}
+
 export default function App() {
   const [screen, setScreen] = useState<Screen>("home");
   const [activeQuiz, setActiveQuiz] = useState<Quiz | null>(null);
@@ -661,7 +667,6 @@ export default function App() {
         setCurrentQuestion((q) => q + 1);
         setAnimating(false);
       } else {
-        // Calculate result
         const sum = newAnswers.reduce((a, b) => a + b, 0);
         const resultCount = activeQuiz?.results.length ?? 4;
         const idx = Math.floor((sum / (newAnswers.length * 3)) * resultCount);
@@ -680,17 +685,8 @@ export default function App() {
     setResultIndex(null);
   };
 
-  const navItems = [{ id: "home", label: "Quizzes", emoji: "🎯" }];
-
-  const renderBoldText = (text: string) => {
-    const parts = text.split(/\*\*(.*?)\*\*/g);
-    return parts.map((part, i) =>
-      i % 2 === 1 ? <strong key={i}>{part}</strong> : part
-    );
-  };
-
   return (
-    <Shell navItems={navItems} activeNav="home" onNavChange={() => resetToHome()}>
+    <Shell>
       {screen === "home" && (
         <div className="max-w-2xl mx-auto px-4 py-8">
           <div className="text-center mb-10">
@@ -723,7 +719,7 @@ export default function App() {
                   >
                     {quiz.emoji}
                   </span>
-                  <div>
+                  <div className="flex-1 min-w-0">
                     <div
                       className="font-semibold text-base"
                       style={{ color: "var(--ink)" }}
@@ -737,7 +733,7 @@ export default function App() {
                       {quiz.subtitle}
                     </div>
                   </div>
-                  <div className="ml-auto" style={{ color: "var(--muted)" }}>
+                  <div className="ml-auto flex-shrink-0" style={{ color: "var(--muted)" }}>
                     →
                   </div>
                 </div>
@@ -749,11 +745,10 @@ export default function App() {
 
       {screen === "quiz" && activeQuiz && (
         <div className="max-w-xl mx-auto px-4 py-8">
-          {/* Header */}
           <div className="flex items-center gap-3 mb-8">
             <button
               onClick={resetToHome}
-              className="text-sm px-3 py-1.5 rounded-lg transition-colors"
+              className="text-sm px-3 py-1.5 rounded-lg transition-colors flex-shrink-0"
               style={{
                 color: "var(--muted)",
                 background: "var(--panel)",
@@ -762,27 +757,24 @@ export default function App() {
             >
               ← Back
             </button>
-            <div className="flex-1">
-              <div className="flex gap-1.5">
-                {activeQuiz.questions.map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-1.5 flex-1 rounded-full transition-all duration-300"
-                    style={{
-                      background:
-                        i < currentQuestion
-                          ? activeQuiz.color
-                          : i === currentQuestion
-                          ? activeQuiz.color + "60"
-                          : "var(--line)",
-                    }}
-                  />
-                ))}
-              </div>
+            <div className="flex-1 flex gap-1.5">
+              {activeQuiz.questions.map((_, i) => (
+                <div
+                  key={i}
+                  className="h-1.5 flex-1 rounded-full transition-all duration-300"
+                  style={{
+                    background:
+                      i < currentQuestion
+                        ? activeQuiz.color
+                        : i === currentQuestion
+                        ? activeQuiz.color + "60"
+                        : "var(--line)",
+                  }}
+                />
+              ))}
             </div>
           </div>
 
-          {/* Quiz title */}
           <div className="flex items-center gap-2 mb-6">
             <span className="text-2xl">{activeQuiz.emoji}</span>
             <span
@@ -793,7 +785,6 @@ export default function App() {
             </span>
           </div>
 
-          {/* Question */}
           <div
             className={`transition-opacity duration-300 ${
               animating ? "opacity-0" : "opacity-100"
@@ -801,57 +792,46 @@ export default function App() {
           >
             <h2
               className="text-2xl md:text-3xl font-bold mb-8 leading-snug"
-              style={{
-                fontFamily: "Fraunces, serif",
-                color: "var(--ink)",
-              }}
+              style={{ fontFamily: "Fraunces, serif", color: "var(--ink)" }}
             >
               {activeQuiz.questions[currentQuestion].text}
             </h2>
 
             <div className="grid gap-3">
-              {activeQuiz.questions[currentQuestion].options.map(
-                (option, i) => (
-                  <button
-                    key={i}
-                    onClick={() => handleAnswer(i)}
-                    disabled={animating}
-                    className="w-full text-left p-4 rounded-[1rem] transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
-                    style={{
-                      background: "var(--panel)",
-                      border: "1px solid var(--line)",
-                      color: "var(--ink)",
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLButtonElement).style.borderColor =
-                        activeQuiz.color;
-                      (
-                        e.currentTarget as HTMLButtonElement
-                      ).style.background = activeQuiz.color + "10";
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLButtonElement).style.borderColor =
-                        "var(--line)";
-                      (
-                        e.currentTarget as HTMLButtonElement
-                      ).style.background = "var(--panel)";
-                    }}
-                  >
-                    <div className="flex items-start gap-3">
-                      <span
-                        className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"
-                        style={{
-                          background: activeQuiz.color + "20",
-                          color: activeQuiz.color,
-                        }}
-                      >
-                        {String.fromCharCode(65 + i)}
-                      </span>
-                      <span className="text-sm leading-relaxed">{option}</span>
-                    </div>
-                  </button>
-                )
-              )}
+              {activeQuiz.questions[currentQuestion].options.map((option, i) => (
+                <button
+                  key={i}
+                  onClick={() => handleAnswer(i)}
+                  disabled={animating}
+                  className="w-full text-left p-4 rounded-[1rem] transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                  style={{
+                    background: "var(--panel)",
+                    border: "1px solid var(--line)",
+                    color: "var(--ink)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = activeQuiz.color;
+                    e.currentTarget.style.background = activeQuiz.color + "10";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = "var(--line)";
+                    e.currentTarget.style.background = "var(--panel)";
+                  }}
+                >
+                  <div className="flex items-start gap-3">
+                    <span
+                      className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"
+                      style={{
+                        background: activeQuiz.color + "20",
+                        color: activeQuiz.color,
+                      }}
+                    >
+                      {String.fromCharCode(65 + i)}
+                    </span>
+                    <span className="text-sm leading-relaxed">{option}</span>
+                  </div>
+                </button>
+              ))}
             </div>
           </div>
 
@@ -866,7 +846,6 @@ export default function App() {
 
       {screen === "result" && activeQuiz && resultIndex !== null && (
         <div className="max-w-xl mx-auto px-4 py-8">
-          {/* Result card */}
           <div className="text-center mb-8">
             <div
               className="w-20 h-20 rounded-[1.25rem] flex items-center justify-center text-4xl mx-auto mb-4"
@@ -892,10 +871,7 @@ export default function App() {
               border: `2px solid ${activeQuiz.color}40`,
             }}
           >
-            <p
-              className="text-lg leading-relaxed"
-              style={{ color: "var(--ink)" }}
-            >
+            <p className="text-lg leading-relaxed" style={{ color: "var(--ink)" }}>
               {renderBoldText(activeQuiz.results[resultIndex])}
             </p>
           </div>
@@ -904,10 +880,7 @@ export default function App() {
             <button
               onClick={() => startQuiz(activeQuiz)}
               className="w-full py-3.5 rounded-[0.75rem] font-semibold transition-all duration-200 hover:opacity-90 active:scale-[0.98]"
-              style={{
-                background: activeQuiz.color,
-                color: "#fff",
-              }}
+              style={{ background: activeQuiz.color, color: "#fff" }}
             >
               Retake this quiz
             </button>
@@ -924,7 +897,6 @@ export default function App() {
             </button>
           </div>
 
-          {/* Other quizzes */}
           <div className="mt-8">
             <h3
               className="text-sm font-semibold mb-3 uppercase tracking-wider"
@@ -947,16 +919,10 @@ export default function App() {
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-xl">{quiz.emoji}</span>
-                      <span
-                        className="text-sm font-medium"
-                        style={{ color: "var(--ink)" }}
-                      >
+                      <span className="text-sm font-medium flex-1" style={{ color: "var(--ink)" }}>
                         {quiz.title}
                       </span>
-                      <span
-                        className="ml-auto text-xs"
-                        style={{ color: "var(--muted)" }}
-                      >
+                      <span className="text-xs flex-shrink-0" style={{ color: "var(--muted)" }}>
                         →
                       </span>
                     </div>
