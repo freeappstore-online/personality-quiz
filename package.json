@@ -8,7 +8,6 @@
     "dev": "pnpm --filter @personality-quiz/web dev",
     "build": "pnpm --filter @personality-quiz/web build",
     "preview": "pnpm --filter @personality-quiz/web preview",
-    "typecheck": "pnpm --filter @personality-quiz/web exec tsc -b",
-    "test": "pnpm --filter @personality-quiz/web test"
+    "typecheck": "pnpm --filter @personality-quiz/web exec tsc -b"
   }
 }
