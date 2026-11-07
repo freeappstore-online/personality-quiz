@@ -2,8 +2,15 @@
   "name": "personality-quiz",
   "private": true,
   "packageManager": "pnpm@10.30.3",
-  "engines": { "node": ">=22" },
-  "pnpm": { "onlyBuiltDependencies": ["esbuild"] },
+  "engines": {
+    "node": ">=22"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
+  },
   "scripts": {
     "dev": "pnpm --filter @personality-quiz/web dev",
     "build": "pnpm --filter @personality-quiz/web build",
