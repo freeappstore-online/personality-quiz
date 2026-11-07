@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Shell from "./components/Shell";
+import { Shell } from "./components/Shell";
 
 interface Question {
   text: string;
