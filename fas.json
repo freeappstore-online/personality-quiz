@@ -1,0 +1,6 @@
+{
+  "appId": "personality-quiz",
+  "applicationRoot": "web",
+  "outputPath": "web/dist",
+  "buildCommand": "pnpm build"
+}
